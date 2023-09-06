@@ -1,0 +1,97 @@
+# Build artifacts
+build/
+*.o
+*.moc
+*.moc.cpp
+*.pro.user
+*.pro.user.*
+*.qmake.stash
+*.user
+*.user.*
+*.suo
+*.VC.db
+*.user
+*.sdf
+*.opensdf
+
+# Compiled files
+*.dll
+*.exe
+*.pdb
+
+# Generated files
+Makefile
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+cmake_install.cmake
+CMakeDoxyfile.in
+
+# Qt-specific files
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.qmldir
+*.qmlproject.user
+
+# IDE-specific files and directories
+.idea/
+.vscode/
+*.cproj
+*.sln
+*.suo
+*.user
+*.user.*
+*.sdf
+*.opensdf
+*.cbp
+*.layout
+*.xml
+*.workspace
+*.project
+*.cmodel
+*.settings
+*.tmproj
+
+# Generated documentation
+doc/html/
+doc/latex/
+doc/qch/
+doc/qhp/
+doc/qhcp/
+doc/sql/
+
+# Ignore backups and swap files
+*~
+.*.swp
+.*.swo
+*.bak
+
+# Ignore Mac-specific files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Ignore Windows-specific files
+Thumbs.db
+desktop.ini
+
+# Ignore Linux-specific files
+lost+found/
+*.trashinfo
+
+# Ignore package manager directories
+/bin/
+/build/
+/debian/
+/dist/
+/lib/
+/out/
+/packages/
+/test/
+
+# Ignore Qt Creator files
+*.autosave
+*.qmlproject.swp
