@@ -28,7 +28,7 @@ class IList{ //oder auch BaseList
         virtual void advance()=0;
         virtual T elem() = 0;
         virtual void insert(T& element)=0; //T& ==> Referenz  //nur variablen möglich keine direkten werte
-        virtual void remove()=0;  //soll delete sein
+        virtual void remove()=0;  
         virtual ~IList() {}
 };
 

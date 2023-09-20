@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFile>
 #include <QTextStream>
-
+#include <QMessageBox>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,7 +24,6 @@ MainWindow::~MainWindow()
 //{
 //    QCoreApplication::quit();
 //}
-
 //void MainWindow::on_btnSave_clicked()
 //{
 //   QString name = ui->textEdit->toPlainText();
@@ -37,14 +36,10 @@ MainWindow::~MainWindow()
 //           file.close();
 //       }
 //}
-
 //void MainWindow::on_btnNew_clicked()
 //{
 //    ui->textEdit->setText("");
 //}
-
-
-
 //void MainWindow::on_btnLoad_clicked()
 //{
 //    QFile file("vorherigeEingabe.txt");
@@ -87,12 +82,28 @@ void MainWindow::on_action_Laden_triggered()
            QString combinedText = "Hallo " + name + ", schön dich kennenzulernen!";
            ui->textEdit->setText(combinedText);
            file.close();
+
        }
+
 }
 
 
 void MainWindow::on_action_Programm_Beenden_triggered()
 {
       QCoreApplication::quit();
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    QString name = ui->textEdit->toPlainText();
+    QString combinedText = "Hallo "+ name + ", schön dich kennenzulernen!";
+    ui->textEdit->setText(combinedText);
+    QFile file("vorherigeEingabe.txt");
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << name;
+            file.close();
+        }
 }
 
