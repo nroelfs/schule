@@ -1,0 +1,17 @@
+[
+    {
+        "nachname": "Roelfs",
+        "tel": "1234",
+        "vorname": "Nicklas"
+    },
+    {
+        "nachname": "Welt",
+        "tel": "123",
+        "vorname": "Hallo "
+    },
+    {
+        "nachname": "Roelfs",
+        "tel": "123",
+        "vorname": "Nicklas"
+    }
+]
