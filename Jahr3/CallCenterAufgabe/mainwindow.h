@@ -36,5 +36,6 @@ private:
     Ui::MainWindow *ui;
     QVector<Kunde> Kunden;
     QString default_file ="savedContacts.json";
+
 };
 #endif // MAINWINDOW_H

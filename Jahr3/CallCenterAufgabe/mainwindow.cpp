@@ -33,17 +33,28 @@ void MainWindow::on_action_Neu_triggered()
 
 void MainWindow::on_pushButtonAdd_clicked()
 {
-    QString nName = ui->lineEditNachname->text();
-    QString vName = ui->lineEditVorname->text();
-    QString tel = ui->lineEditTelefonnummer->text();
-    Kunde NeuerKunde(vName,nName,tel);
-    if(int index = Kunden.indexOf(NeuerKunde) == -1){
-        Kunden.push_back(NeuerKunde);
+    //QString nName = ui->lineEditNachname->text();
+    //QString vName = ui->lineEditVorname->text();
+    //QString tel = ui->lineEditTelefonnummer->text();
+    Kunde NeuerKunde(/*vName,nName,tel*/
+        ui->lineEditNachname->text(),
+        ui->lineEditVorname->text(),
+        ui->lineEditTelefonnummer->text());
+
+    Kunde emptyKunde("","","");
+    if(NeuerKunde != emptyKunde){
+        int index = Kunden.indexOf(NeuerKunde);
+        if(index == -1){
+            Kunden.push_back(NeuerKunde);
+        }else{
+            //Kunden[index] = NeuerKunde;
+            QMessageBox::information(this, "Kunde Bereits vorhanden","Der Kunde ist bereits vorhanden!");
+        }
+        this->setTextLabelsAndNavigationButtons(NeuerKunde);
     }else{
-        //Kunden[index] = NeuerKunde;
-        QMessageBox::information(this, "Kunde Bereits vorhanden","Der Kunde ist bereits vorhanden!");
+        QMessageBox::warning(this, "Fehler!","Der Kunde darf nicht leer sein!");
     }
-    this->setTextLabelsAndNavigationButtons(NeuerKunde);
+
 }
 
 void MainWindow::on_action_Speichern_triggered()
@@ -84,14 +95,14 @@ void MainWindow::on_action_Laden_triggered()
 
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        Kunden.clear();
         QTextStream in(&file);
         QString kundenAsString = in.readAll();
         file.close();
-
         QJsonDocument doc = QJsonDocument::fromJson(kundenAsString.toUtf8());
         QJsonArray kundenAsJsonArray = doc.array();
 
-        for(QJsonValue kunde : kundenAsJsonArray){
+        for(const QJsonValue &kunde : kundenAsJsonArray){
             if(kunde.isObject()){
                 QJsonObject tmpKunde = kunde.toObject();
                 Kunde kundeToObjet;
@@ -99,7 +110,17 @@ void MainWindow::on_action_Laden_triggered()
                 Kunden.push_back(kundeToObjet);
             }
         }
-        this->setTextLabelsAndNavigationButtons(Kunden.first());
+        if( Kunden.size() > 0){
+            if(loadFileName == default_file){
+                QMessageBox::information(this, "Speichern erfolgreich","Kontakte wurden aus dem lokalen speicher geladen");
+            }
+            this->setTextLabelsAndNavigationButtons(Kunden.first());
+        }else{
+            QMessageBox::warning(this,"Fehler","Fehler beim lesen der Datei");
+        }
+
+
+
     }
     else
     {

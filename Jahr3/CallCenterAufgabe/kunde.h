@@ -15,6 +15,7 @@ public:
     QJsonObject toQJsonObject() const;
     void fromQJsonObject(const QJsonObject&);
     bool operator==(const Kunde&)const;
+    bool operator!=(const Kunde&)const;
 private:
     QString vorname;
     QString nachname;

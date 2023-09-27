@@ -28,3 +28,8 @@ bool Kunde::operator==(const Kunde& andererKunde) const{
             nachname == andererKunde.nachname &&
            tel == andererKunde.tel;
 }
+bool Kunde::operator!=(const Kunde& andererKunde) const{
+    return vorname != andererKunde.vorname &&
+            nachname != andererKunde.nachname &&
+           tel != andererKunde.tel;
+}
