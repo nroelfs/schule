@@ -33,10 +33,7 @@ void MainWindow::on_action_Neu_triggered()
 
 void MainWindow::on_pushButtonAdd_clicked()
 {
-    //QString nName = ui->lineEditNachname->text();
-    //QString vName = ui->lineEditVorname->text();
-    //QString tel = ui->lineEditTelefonnummer->text();
-    Kunde NeuerKunde(/*vName,nName,tel*/
+    Kunde NeuerKunde(
         ui->lineEditNachname->text(),
         ui->lineEditVorname->text(),
         ui->lineEditTelefonnummer->text());
@@ -166,23 +163,42 @@ void MainWindow::setTextLabelsAndNavigationButtons(Kunde kunde){
 
 void MainWindow::on_pushButtonZurueck_clicked()
 {
-    QString nName = ui->lineEditNachname->text();
-    QString vName = ui->lineEditVorname->text();
-    QString tel = ui->lineEditTelefonnummer->text();
-    Kunde tmp(vName, nName, tel);
+       Kunde tmp(
+                ui->lineEditNachname->text(),
+                ui->lineEditVorname->text(),
+                ui->lineEditTelefonnummer->text());
     int currentIndex = Kunden.indexOf(tmp);
-    this->setTextLabelsAndNavigationButtons(Kunden[currentIndex - 1]);
+    if(currentIndex > -1){
+        this->setTextLabelsAndNavigationButtons(Kunden[currentIndex - 1]);
+    }else{
+       QMessageBox::StandardButton move;
+       move = QMessageBox::question(this, "Zurueck", "Wenn Sie mit dieser Action fortfahren wird ihr neuer Eintrag entfernt werden",
+                                    QMessageBox::Yes|QMessageBox::No);
+       if(move == QMessageBox::Yes){
+            this->setTextLabelsAndNavigationButtons(Kunden[0]);
+       }
+    }
 }
 
 
 void MainWindow::on_pushButtonWeiter_clicked()
 {
-    QString nName = ui->lineEditNachname->text();
-    QString vName = ui->lineEditVorname->text();
-    QString tel = ui->lineEditTelefonnummer->text();
-    Kunde tmp(vName, nName, tel);
+
+    Kunde tmp(
+        ui->lineEditNachname->text(),
+        ui->lineEditVorname->text(),
+        ui->lineEditTelefonnummer->text());
     int currentIndex = Kunden.indexOf(tmp);
-    this->setTextLabelsAndNavigationButtons(Kunden[currentIndex + 1]);
+    if(currentIndex > -1){
+        this->setTextLabelsAndNavigationButtons(Kunden[currentIndex + 1]);
+    }else{
+       QMessageBox::StandardButton move;
+       move = QMessageBox::question(this, "Weiter", "Wenn Sie mit dieser Action fortfahren wird ihr neuer Eintrag entfernt werden",
+                                    QMessageBox::Yes|QMessageBox::No);
+       if(move == QMessageBox::Yes){
+            this->setTextLabelsAndNavigationButtons(Kunden[0]);
+       }
+    }
 }
 
 

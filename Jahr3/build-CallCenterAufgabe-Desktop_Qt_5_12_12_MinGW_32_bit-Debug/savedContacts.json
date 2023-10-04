@@ -13,5 +13,10 @@
         "nachname": "Roelfs",
         "tel": "123",
         "vorname": "Nicklas"
+    },
+    {
+        "nachname": "Nicklas",
+        "tel": "123",
+        "vorname": "Roelfs"
     }
 ]
