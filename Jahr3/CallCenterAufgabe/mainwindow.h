@@ -19,12 +19,10 @@ private slots:
     void on_action_Neu_triggered();
 
     void on_pushButtonAdd_clicked();
-    QString ToJson(QVector<Kunde>);
 
     void on_action_Speichern_triggered();
 
     void on_action_Laden_triggered();
-    void setTextLabelsAndNavigationButtons(Kunde);
 
     void on_pushButtonZurueck_clicked();
 
@@ -32,10 +30,14 @@ private slots:
 
     void on_action_Beenden_triggered();
 
+
 private:
     Ui::MainWindow *ui;
     QVector<Kunde> Kunden;
     QString default_file ="savedContacts.json";
+    QString ToJson(QVector<Kunde>);
+    void moveDialog();
+    void setTextLabelsAndNavigationButtons(Kunde);
 
 };
 #endif // MAINWINDOW_H
