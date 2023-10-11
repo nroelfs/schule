@@ -20,7 +20,7 @@ bool Liste::empty()
 
 bool Liste::endpos()
 {
-    return currentPosition == size - 1;
+    return currentPosition == size;
 }
 
 void Liste::reset()
