@@ -1,5 +1,6 @@
 #include "liste.h"
 
+//Public Section
 Liste::Liste(int initialCapacity)
 {
     size = 0;
@@ -74,6 +75,18 @@ void Liste::remove()
         }
     }
 }
+void Liste::invert(){
+    int* newArray = new int[capacity];
+    int newArrayIndex = 0;
+    for (int i = size - 1; i >= 0; i--){
+        newArray[newArrayIndex] = array[i];
+        newArrayIndex++;
+    }
+    delete[] array;
+    array = newArray;
+}
+
+
 
 //Private Section
 void Liste::expandArray()

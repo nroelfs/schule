@@ -10,7 +10,7 @@ int main()
     for(int i = 0; i < 100; i++){
         t.insert(i);
     }
-    //t.reset();
+    t.invert();
     while(!t.endpos()){
        int test = t.elem();
        cout << test << endl;;
