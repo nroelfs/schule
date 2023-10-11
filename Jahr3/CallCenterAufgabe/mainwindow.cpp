@@ -167,7 +167,7 @@ void MainWindow::on_action_Laden_triggered()
 
 void MainWindow::on_pushButtonZurueck_clicked()
 {
-       Kunde tmp(
+    Kunde tmp(
         ui->lineEditVorname->text(),
         ui->lineEditNachname->text(),
         ui->lineEditTelefonnummer->text());
