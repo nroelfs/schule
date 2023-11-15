@@ -5,9 +5,11 @@ CONFIG -= qt
 
 SOURCES += \
         abstractlist.cpp \
+        genericlist.cpp \
         liste.cpp \
         main.cpp
 
 HEADERS += \
     abstractlist.h \
+    genericlist.h \
     liste.h

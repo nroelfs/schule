@@ -1,34 +1,40 @@
-#include "liste.h"
+#include "genericlist.h"
 
-Liste::Liste(int initialCapacity)
+template <typename T>
+GenericList<T>::GenericList(int initialCapacity)
 {
     size = 0;
     capacity = initialCapacity;
-    array = new int[capacity];
+    array = new T[capacity];
     currentPosition = -1;
 }
 
-Liste::~Liste()
+template <typename T>
+GenericList<T>::~GenericList()
 {
     delete[] array;
 }
 
-bool Liste::empty()
+template <typename T>
+bool GenericList<T>::empty()
 {
     return size == 0;
 }
 
-bool Liste::endpos()
+template <typename T>
+bool GenericList<T>::endpos()
 {
     return currentPosition == size;
 }
 
-void Liste::reset()
+template <typename T>
+void GenericList<T>::reset()
 {
     currentPosition = 0;
 }
 
-void Liste::advance()
+template <typename T>
+void GenericList<T>::advance()
 {
     if (!endpos())
     {
@@ -36,7 +42,8 @@ void Liste::advance()
     }
 }
 
-void Liste::insert(int number)
+template <typename T>
+void GenericList<T>::insert(T element)
 {
     if (size == capacity)
     {
@@ -49,20 +56,24 @@ void Liste::insert(int number)
     }
 
     shiftElements(currentPosition);
-    array[currentPosition] = number;
+    array[currentPosition] = element;
     size++;
 }
 
-int Liste::elem()
+template <typename T>
+T GenericList<T>::elem()
 {
     if (currentPosition < 0 || currentPosition >= size)
     {
-        return -1;
+        // throw runtime_error("element is not defined");
+        //eigentlich gebe aber ein object T zurück
+        return T();
     }
     return array[currentPosition];
 }
 
-void Liste::remove()
+template <typename T>
+void GenericList<T>::remove()
 {
     if (currentPosition >= 0 && currentPosition < size)
     {
@@ -74,24 +85,26 @@ void Liste::remove()
         }
     }
 }
-void Liste::invert(){
-    int* newArray = new int[capacity];
+//self added
+template <typename T>
+void GenericList<T>::invert()
+{
+    T* newArray = new T[capacity];
     int newArrayIndex = 0;
-    for (int i = size - 1; i >= 0; i--){
+    for (int i = size - 1; i >= 0; i--)
+    {
         newArray[newArrayIndex] = array[i];
         newArrayIndex++;
     }
     delete[] array;
     array = newArray;
 }
-//Private Section
-///
-/// \brief Liste::expandArray
-///erweitert den Zugewiesenen Speicher des Arrays
-void Liste::expandArray()
+//Private
+template <typename T>
+void GenericList<T>::expandArray()
 {
     capacity *= 2;
-    int* newArray = new int[capacity];
+    T* newArray = new T[capacity];
     for (int i = 0; i < size; i++)
     {
         newArray[i] = array[i];
@@ -99,12 +112,9 @@ void Liste::expandArray()
     delete[] array;
     array = newArray;
 }
-/**
- * @brief Liste::shiftElements
- *
- * @param index
- */
-void Liste::shiftElements(int index)
+
+template <typename T>
+void GenericList<T>::shiftElements(int index)
 {
     for (int i = size - 1; i >= index; i--)
     {
