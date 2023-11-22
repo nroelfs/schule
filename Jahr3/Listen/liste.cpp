@@ -47,7 +47,6 @@ void Liste::insert(int number)
     {
         currentPosition = 0;
     }
-
     shiftElements(currentPosition);
     array[currentPosition] = number;
     size++;

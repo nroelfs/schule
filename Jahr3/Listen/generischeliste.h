@@ -1,20 +1,22 @@
 #ifndef GENERICLIST_H
 #define GENERICLIST_H
-#include <igenericlist.h>
+#include <string.h>
+#include "IGenericList.h"
 template <typename T>
-class GenericList : public IGenericList {
+class generischeListe : public IGenericList<T>
+{
 public:
-    GenericList(int initialCapacity = 10);
-    ~GenericList();
+    generischeListe(int initialCapacity = 1);
+    ~generischeListe();
 
     bool empty() const override;
     bool endpos() const override;
     void reset() override;
     void advance() override;
-    void insert(T element) override;
+    void insert(const T& element) override;
     T elem() const override;
     void remove() override;
-    void invert() override;
+    void invert();
 
 private:
     void expandArray();
@@ -26,4 +28,4 @@ private:
     int currentPosition;
 };
 
-#endif  // GENERICLIST_H
+#endif

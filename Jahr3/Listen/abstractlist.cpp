@@ -1,6 +1,6 @@
 #include "abstractlist.h"
 
-AbstractList::AbstractList()
-{
+//AbstractList::AbstractList()
+//{
 
-}
+//}

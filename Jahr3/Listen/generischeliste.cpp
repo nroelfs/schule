@@ -1,8 +1,12 @@
-#include "genericlist.h"
-
+#include "generischeListe.h"
+#include <string>
 
 template <typename T>
-GenericList<T>::GenericList(int initialCapacity)
+generischeListe<T>::generischeListe(int initialCapacity)
+//    : size(0),
+//      capacity(initialCapacity),
+//      array(new T[capacity]),
+//      currentPosition(-1)
 {
     size = 0;
     capacity = initialCapacity;
@@ -11,31 +15,31 @@ GenericList<T>::GenericList(int initialCapacity)
 }
 
 template <typename T>
-GenericList<T>::~GenericList()
+generischeListe<T>::~generischeListe()
 {
     delete[] array;
 }
 
 template <typename T>
-bool GenericList<T>::empty() const
+bool generischeListe<T>::empty() const
 {
     return size == 0;
 }
 
 template <typename T>
-bool GenericList<T>::endpos() const
+bool generischeListe<T>::endpos() const
 {
     return currentPosition == size;
 }
 
 template <typename T>
-void GenericList<T>::reset()
+void generischeListe<T>::reset()
 {
     currentPosition = 0;
 }
 
 template <typename T>
-void GenericList<T>::advance()
+void generischeListe<T>::advance()
 {
     if (!endpos())
     {
@@ -44,7 +48,7 @@ void GenericList<T>::advance()
 }
 
 template <typename T>
-void GenericList<T>::insert(T element)
+void generischeListe<T>::insert(const T& element)
 {
     if (size == capacity)
     {
@@ -62,19 +66,17 @@ void GenericList<T>::insert(T element)
 }
 
 template <typename T>
-T GenericList<T>::elem() const
+T generischeListe<T>::elem() const
 {
     if (currentPosition < 0 || currentPosition >= size)
     {
-        // throw runtime_error("element nicht definiert");
-        //eigentlich error aber gebe ein object T zurück
         return T();
     }
     return array[currentPosition];
 }
 
 template <typename T>
-void GenericList<T>::remove()
+void generischeListe<T>::remove()
 {
     if (currentPosition >= 0 && currentPosition < size)
     {
@@ -86,9 +88,9 @@ void GenericList<T>::remove()
         }
     }
 }
-//self added
+
 template <typename T>
-void GenericList<T>::invert()
+void generischeListe<T>::invert()
 {
     T* newArray = new T[capacity];
     int newArrayIndex = 0;
@@ -100,9 +102,9 @@ void GenericList<T>::invert()
     delete[] array;
     array = newArray;
 }
-//Private
+
 template <typename T>
-void GenericList<T>::expandArray()
+void generischeListe<T>::expandArray()
 {
     capacity *= 2;
     T* newArray = new T[capacity];
@@ -115,7 +117,7 @@ void GenericList<T>::expandArray()
 }
 
 template <typename T>
-void GenericList<T>::shiftElements(int index)
+void generischeListe<T>::shiftElements(int index)
 {
     for (int i = size - 1; i >= index; i--)
     {
@@ -123,3 +125,13 @@ void GenericList<T>::shiftElements(int index)
     }
     currentPosition = index;
 }
+
+template class generischeListe<char>;
+template class generischeListe<std::string>;
+template class generischeListe<int>;
+template class generischeListe<double>;
+template class generischeListe<long>;
+template class generischeListe<float>;
+template class generischeListe<bool>;
+
+
