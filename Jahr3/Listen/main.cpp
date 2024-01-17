@@ -52,6 +52,10 @@ int main()
 
         case 2:
             liste.remove();
+            if(liste.empty())
+            {
+                index=0;
+            }
             break;
 
         case 3:

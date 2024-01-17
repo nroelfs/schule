@@ -4,8 +4,7 @@ template<typename T>
 class AbstractList
 {
 public:
-    //AbstractList();
-
+    AbstractList();
     /**
      * @brief empty: Gibt an, ob die Liste leer ist.
      * @return true wenn Liste leer, sonst false.
@@ -48,4 +47,6 @@ public:
      */
     virtual void remove() = 0;
 };
+template <typename T>
+inline AbstractList<T>::AbstractList(){}
 #endif // ABSTRACTLIST_H
