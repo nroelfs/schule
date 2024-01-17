@@ -4,14 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        abstractlist.cpp \
-        generischeliste.cpp \
-        igenericlist.cpp \
-        liste.cpp \
         main.cpp
 
 HEADERS += \
     abstractlist.h \
-    generischeliste.h \
-    igenericlist.h \
-    liste.h
+    arraylist.h
