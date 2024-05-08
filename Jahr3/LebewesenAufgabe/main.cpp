@@ -5,10 +5,10 @@ using namespace std;
 
 int main()
 {   
-    Insekt ameise("ameise", 10);
+    Insekt ameise("ameise", 60);
     Vogel specht("specht", 50, 5);
 
-    specht.Fressen();
+    specht.Fressen(ameise.Energiegehalt());
     ameise.GefressenWerden();
     specht.Fliegen();
 

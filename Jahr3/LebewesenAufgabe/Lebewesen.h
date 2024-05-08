@@ -35,7 +35,7 @@ inline Lebewesen::Lebewesen()
 {
     _Lebendig = true;
     _Alter = 0;
-    _Lebenserwartung = rand();// % 30 + 1;
+    _Lebenserwartung = rand();// % 30 + 1; //für 1 bis 30 Jahre
 }
 
 inline int Lebewesen::Alter() const

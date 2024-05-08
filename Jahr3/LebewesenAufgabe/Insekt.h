@@ -11,10 +11,21 @@ public:
     void Fressen() override;
     void GefressenWerden()override;
     Insekt(string _bezeichnung, int _energiegehalt);
-
+    const string &Bezeichnung() const;
+    int Energiegehalt() const;
 };
 
 inline Insekt::Insekt(string _bezeichnung, int _energiegehalt) : _Bezeichnung(_bezeichnung), _Energiegehalt(_energiegehalt) {}
+
+inline const string &Insekt::Bezeichnung() const
+{
+    return _Bezeichnung;
+}
+
+inline int Insekt::Energiegehalt() const
+{
+    return _Energiegehalt;
+}
 
 inline void Insekt::Fressen() {
     cout << "Das Insekt frisst etwas." << endl;
