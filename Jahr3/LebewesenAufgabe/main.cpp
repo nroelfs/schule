@@ -4,14 +4,13 @@
 using namespace std;
 
 int main()
-{
-    srand(time(0));
-
-    Insekt ameise("Spinne", 10);
-    Vogel specht("Amsel", 50, 5);
+{   
+    Insekt ameise("ameise", 10);
+    Vogel specht("specht", 50, 5);
 
     specht.Fressen();
     ameise.GefressenWerden();
     specht.Fliegen();
+
     return 0;
 }

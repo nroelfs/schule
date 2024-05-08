@@ -12,27 +12,27 @@ private:
 public:
      void Fressen() override;
      void GefressenWerden() override;
-     Vogel(std::string _bezeichnung, int _maximalerSaettigungsgrad, int _flugenergieverbrauch);
+     Vogel(string _bezeichnung, int _maximalerSaettigungsgrad, int _flugenergieverbrauch);
      void Fliegen();
      void FutterAufnehmen(int menge);
 };
-inline Vogel::Vogel(std::string _bezeichnung, int _maximalerSaettigungsgrad, int _flugenergieverbrauch) :
+inline Vogel::Vogel(string _bezeichnung, int _maximalerSaettigungsgrad, int _flugenergieverbrauch) :
     _Bezeichnung(_bezeichnung), _MaximalerSaettigungsgrad(_maximalerSaettigungsgrad), _Flugenergieverbrauch(_flugenergieverbrauch) {
     _AktuellerSaettigungsgrad = 0;
 }
 inline void Vogel::Fressen() {
-     std::cout << "Der Vogel frisst Insekten." << std::endl;
+     cout << "Der Vogel frisst Insekten." << endl;
 }
 
 inline void Vogel::GefressenWerden() {
-     std::cout << "Der Vogel wird von einem anderen Tier gefressen." << std::endl;
+     cout << "Der Vogel wird von einem anderen Tier gefressen." << endl;
 }
 inline void Vogel::Fliegen() {
     if (_AktuellerSaettigungsgrad > 0) {
         _AktuellerSaettigungsgrad -= _Flugenergieverbrauch;
-        std::cout << "Der Vogel fliegt und verbraucht Energie." << std::endl;
+        cout << "Der Vogel fliegt und verbraucht Energie." << endl;
     } else {
-        std::cout << "Der Vogel hat nicht genug Energie zum Fliegen." << std::endl;
+        cout << "Der Vogel hat nicht genug Energie zum Fliegen." << endl;
     }
 }
 

@@ -17,10 +17,10 @@ public:
 inline Insekt::Insekt(string _bezeichnung, int _energiegehalt) : _Bezeichnung(_bezeichnung), _Energiegehalt(_energiegehalt) {}
 
 inline void Insekt::Fressen() {
-    cout << "Das Insekt frisst etwas." << std::endl;
+    cout << "Das Insekt frisst etwas." << endl;
 }
 
 inline void Insekt::GefressenWerden(){
-    cout << "Das Insekt wird gefressen." << std::endl;
+    cout << "Das Insekt wird gefressen." << endl;
 }
 #endif // INSEKT_H
