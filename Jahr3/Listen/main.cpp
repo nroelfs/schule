@@ -1,13 +1,16 @@
 #include <iostream>
 #include "arraylist.h"
-
+#include "typeinfo"
+#include "string"
 using namespace std;
 
 int main()
 {
-    ArrayList<int> liste;
+    double input;
     int auswahl;
+    ArrayList<typeof(input)> liste;
     int index = 0;
+
 
     do
     {
@@ -22,8 +25,13 @@ int main()
             cout << liste.elem() << "\n";
             liste.reset();
             for (int i = 0; i < index; i++) {
+
+                for (int i = 0; i < to_string(liste.elem()).length(); i++)
+                {
+                    cout << " ";
+                }
+                cout << " ";
                 liste.advance();
-                cout << "  ";
             }
             cout << "^\n\n";
         }
@@ -44,10 +52,9 @@ int main()
         switch (auswahl)
         {
         case 1:
-            int number;
-            cout << "Zahl: ";
-            cin >> number;
-            liste.insert(number);
+            cout << "Eingabe: ";
+            cin >> input;
+            liste.insert(input);
             break;
 
         case 2:
