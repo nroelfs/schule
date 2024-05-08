@@ -6,9 +6,9 @@ using namespace std;
 int main()
 {   
     Insekt ameise("ameise", 60);
-    Vogel specht("specht", 50, 5);
+    Vogel specht("specht", 50/*,5*/);
 
-    specht.Fressen(ameise.Energiegehalt());
+    specht.Fressen(/*ameise.Energiegehalt()*/);
     ameise.GefressenWerden();
     specht.Fliegen();
 
