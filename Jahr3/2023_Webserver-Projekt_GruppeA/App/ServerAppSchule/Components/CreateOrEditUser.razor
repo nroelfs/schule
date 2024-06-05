@@ -1,0 +1,60 @@
+﻿@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+<MudDialog style="width:1000px">
+    <DialogContent>
+        <MudText Align="Align.Start" Typo="Typo.h6">Benutzer erstellen</MudText>
+        <MudTextField 
+            T="string"
+            @bind-Value="InputUser.UserName"
+            Label="Benutzername" 
+            Required="true" 
+            RequiredError="Es wird ein Benutzername benötigt!" />
+        <MudTextField 
+            T="string"
+            @bind-Value="InputUser.Email"
+            Label="E-Mail" 
+            Required="true"
+            InputType="InputType.Email"
+            RequiredError="Es wird eine E-Mail benötigt!"
+            Validation="@(new EmailAddressAttribute() {ErrorMessage = "Diese E-Mail ist ungültig!"})"
+            OnlyValidateIfDirty="true" />
+        <MudSelect 
+            @bind-Value="InputUser.Role"
+            Label="Berechtigung"
+            T="string"
+            >
+            @foreach(string role in _roles)
+            {
+                <MudSelectItem Value="@role" />
+            }
+        </MudSelect>
+        <MudTextField 
+            T="string"
+            @bind-Value="InputUser.Password"
+            Label="Passwort" 
+            HelperText="Bitte wählen Sie ein starkes Passwort"
+            InputType="InputType.Password"
+            Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))"
+            Required="true"
+            RequiredError="Password is required!"
+            OnlyValidateIfDirty="true" />
+        <MudTextField 
+            T="string"
+            Label="Passwort" 
+            HelperText="Bitte wiedeholen Sie das Passwort" 
+            InputType="InputType.Password"
+            Required="true"
+            RequiredError="Password is required!"
+            Validation="@(new Func<string, string>(PasswordMatch))"
+            OnlyValidateIfDirty="true"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" >Abbrechen</MudButton>
+        <MudButton 
+            OnClick="SubmitAsync"
+            Color="Color.Success">
+            Speichern
+        </MudButton>
+    </DialogActions>  
+</MudDialog>
+

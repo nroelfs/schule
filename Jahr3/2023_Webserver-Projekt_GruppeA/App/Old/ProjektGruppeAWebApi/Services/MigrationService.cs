@@ -1,0 +1,117 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using ProjektGruppeAWebApi.Controllers;
+using ProjektGruppeAWebApi.Models;
+using ProjektGruppeWebApi;
+using System;
+
+
+namespace ProjektGruppeAWebApi.Services
+{
+    public class MigrationService 
+    {
+        #region private fields
+        private readonly IHost _host;
+
+        #endregion
+        #region public constructors
+        public MigrationService(IHost host)
+        {
+            _host = host;
+        }
+        #endregion
+        #region public Methods
+        /// <summary>
+        /// Migriert die Datenbank auf den Aktuelsten Stand und Fügt die Stammdaten ein falls diese noch nicht in der Datenbank sind.
+        /// </summary>
+        public void ApplyMigrations()
+        {
+            var serviceProvider = _host.Services.CreateScope().ServiceProvider;
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<ProjektGruppeAContext>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<MigrationService>>();
+
+                int maxAttempts = 3;
+                int attempts = 0;
+
+                while (attempts < maxAttempts)
+                {
+                    try
+                    {
+                        dbContext.Database.Migrate();
+                        logger.LogInformation("Migrations applied successfully.");
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        attempts++;
+                        logger.LogError($"Migration attempt {attempts} failed: {ex.Message}");
+                        if (attempts >= maxAttempts)
+                        {
+                            logger.LogError("Maximum migration attempts reached. The application will now exit.");
+                            Environment.Exit(1);
+                        }
+                    }
+                }
+                RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+                Task applySeedData = SeedRoles(roleManager);
+                Task applySeedUserData = SeedUsers(userManager,dbContext);
+            }
+        }
+        #endregion
+        #region private Methods
+        /// <summary>
+        /// Erstellt die Basis Rollen die in der Web App verfügbar sein sollen.
+        /// </summary>
+        /// <param name="roleManager">Refernenz auf die vom Indentity Framework bereitgestellte API für das ASPNETCORE Identity Framework</param>
+        ///
+        private async Task SeedRoles(RoleManager<IdentityRole> roleManager)
+        {
+            if (!await roleManager.RoleExistsAsync("Admin"))
+            {
+                var adminRole = new IdentityRole("Admin");
+                await roleManager.CreateAsync(adminRole);
+            }
+
+            if (!await roleManager.RoleExistsAsync("FTPUser"))
+            {
+                var ftpUserRole = new IdentityRole("FTPUser");
+                await roleManager.CreateAsync(ftpUserRole);
+            }
+
+            if (!await roleManager.RoleExistsAsync("User"))
+            {
+                var userRole = new IdentityRole("User");
+                await roleManager.CreateAsync(userRole);
+            }
+        }
+        /// <summary>
+        /// Erstellt den ersten User um Zugriff auf die APP zu gewähren
+        /// </summary>
+        /// <param name="usermanager">Refernenz auf die vom Indentity Framework bereitgestellte API für das ASPNETCORE Identity Framework, für die Klasse User</param>
+        /// <param name="dbContext">Aktuelle Datenbank Kontext</param>
+        /// <returns></returns>
+        private async Task SeedUsers(UserManager<User> usermanager, ProjektGruppeAContext dbContext)
+        {
+            if (!dbContext.Users.Any())
+            {
+                var user = new User
+                {
+                    UserName = "Service",
+                    LastName = "Account",
+                    Email = "user@example.com",
+                    FirstName = "Service",
+                    Role = "Admin"
+                };
+                await usermanager.CreateAsync(user, "Admin123-");
+            }
+        }
+        #endregion
+    }
+}

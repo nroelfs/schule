@@ -1,0 +1,94 @@
+﻿@page "/userAdmininstration"
+@using ServerAppSchule.Interfaces
+@using System.Security.Claims;
+
+<MudTable 
+    Items="@_slimmedUserList" 
+    Hover="true" 
+    SortLabel="Sort By">
+    <ToolBarContent>
+        <MudText Align="Align.Start" Typo="Typo.h6">Benutzer Verwaltung</MudText>
+         <MudSpacer/>
+        <MudButton 
+            Variant="Variant.Text" 
+            Color="Color.Success" 
+            IconColor="Color.Success" 
+            StartIcon="@Icons.Material.Filled.Add"  
+            Size="Size.Small"
+            OnClick="@(() => OnAddClicked())">
+                Hinzufügen
+        </MudButton>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortBy="new Func<UserSlim, object>(x=>x.Username)">Benutzername</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UserSlim, object>(x=>x.Email)">E-Mail</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<UserSlim, object>(x=>x.Role)">Berechtigung</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Benutzername">@context.Username</MudTd>
+        <MudTd DataLabel="E-Mail">@context.Email</MudTd>
+        <MudTd DataLabel="Berechtigung">@context.Role</MudTd>
+        <MudTd>
+            @if(context.Id == _uid || _role == "Admin")
+            {
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenChangePassword(context))" />
+            }   
+        </MudTd>
+    </RowTemplate>  
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{10,25,50}" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    [Inject] 
+    private IUserService _userService { get; set; }
+    [Inject] 
+    private IRoleService _roleService { get; set; }
+    [Inject] 
+    private IDialogService _dialogService { get; set; }
+    [Inject]
+    private NavigationManager _navManager { get; set; }
+    [CascadingParameter]
+    Task<AuthenticationState> _authenticationState { get; set; }
+    IEnumerable<UserSlim> _slimmedUserList = new List<UserSlim>();
+    RegisterUser _userToEdit = new();
+    List<string> _roles;
+    string _role = string.Empty;
+    string _uid = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        var currentauth = await _authenticationState;
+        _role = currentauth.User.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;    
+        if (!currentauth.User.Identity.IsAuthenticated && _role != "Admin")
+        {
+            _navManager.NavigateTo("/login", true);
+        }
+        _uid = currentauth.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        _slimmedUserList = await _userService.GetAllMappedUsersAsync();
+        _roles = _roleService.GetRoleNames();
+        base.OnInitialized();
+    }
+    /// <summary>
+    /// Öffnet einen Dialog um einen neuen Benutzer hinzuzufügen
+    /// </summary>
+    void OnAddClicked()
+    {
+        _userToEdit = new RegisterUser();
+        var parameters = new DialogParameters<CreateOrEditUser>();
+        parameters.Add(x => x.InputUser, _userToEdit);
+        parameters.Add(x => x._roles, _roles);
+        _dialogService.Show<CreateOrEditUser>();
+    }
+    /// <summary>
+    /// Öffnet das Dialogfenster zum Ändern des Passworts
+    /// </summary>
+    void OpenChangePassword(UserSlim user)
+    {
+        DialogParameters<ChangePasswordDialog> parameters = new DialogParameters<ChangePasswordDialog>();
+        parameters.Add(x => x.uid, user.Id);
+        _dialogService.Show<ChangePasswordDialog>("Passwort Ändern", parameters);
+
+    }
+}

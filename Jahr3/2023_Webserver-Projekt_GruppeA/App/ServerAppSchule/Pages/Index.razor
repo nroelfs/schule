@@ -1,0 +1,14 @@
+﻿@page "/"
+@page "/home"
+<PageTitle>Home</PageTitle>
+<MudButton 
+    OnClick="OpenDialog"
+    Color="Color.Success">
+    Beitrag erstellen
+</MudButton>
+<div style="display: grid; align-items: center; justify-content: center;">
+    @foreach (Post post in _posts)
+    {
+        <SinglePost LoggedInUID="@_uid" Post="@post" />
+    }
+</div>

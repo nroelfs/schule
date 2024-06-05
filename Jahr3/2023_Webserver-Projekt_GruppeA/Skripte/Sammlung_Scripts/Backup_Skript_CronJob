@@ -1,0 +1,16 @@
+Skript :
+
+#!/bin/bash
+
+# Füge hier den Befehl oder das Skript ein, das alle 24 Stunden ausgeführt werden soll
+/path/backup_skript.sh
+
+
+Skript ausführbar machen :
+
+chmod +x backup_skript_cronjob.sh
+
+crontab -e
+
+Einfügen in die Tabelle :
+0 12 * * * /path/zum/deinem_skript.sh <- Führt alle 12 Stunden das Backup_Skript.sh aus

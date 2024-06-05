@@ -1,0 +1,31 @@
+﻿
+
+<MudDialog style="width:1000px">
+    <DialogContent>
+        <MudTextField 
+            @bind-Value="_post.Text"
+            T="string"
+            Label="Inhalt" 
+            Variant="Variant.Filled"
+            Text="@_post.Text"
+            Lines="3"></MudTextField>
+        <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept=".png, .jpg" FilesChanged="@(async(e)  => await UploadFiles(e))" MaximumFileCount="1">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                           for="@context.Id">
+                    Bild Hochladen
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Abbrechen</MudButton>
+        <MudButton OnClick="SubmitAsync"
+                   Color="Color.Success">
+            Erstellen
+        </MudButton>
+    </DialogActions>
+</MudDialog>

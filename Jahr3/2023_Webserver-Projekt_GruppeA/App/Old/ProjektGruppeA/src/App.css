@@ -1,0 +1,57 @@
+/* @import url('./styles/colors.css');
+
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    color: var(--colorText);
+    background-color: var(--colorBgContainer);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.layout {
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-areas:
+        "nav main"
+        "footer footer";
+    grid-template-rows: 1fr auto;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+}
+
+nav {
+    grid-area: nav;
+    height: 100%;
+    background-color: var(--colorBgContainer);
+    border-right: 1.5px solid var(--colorBorder); 
+}
+
+main {
+    grid-area: main;
+}
+
+footer {
+    text-align: left;
+    grid-area: footer;
+    width: 100%;
+    background-color: var(--colorBgContainer);
+    position: relative;
+    margin-top: auto;
+    z-index: 1;
+} */
+.ant-layout-sider-trigger{
+    background-color: #732dd8 !important;
+}

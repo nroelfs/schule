@@ -1,0 +1,27 @@
+﻿@page "/settings"
+<MudText Typo="Typo.h6">Einstellungen</MudText>
+<MudDivider />
+<MudExpansionPanels>
+    <MudExpansionPanel>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Person" />
+                Benutzer
+            </MudText>
+        </TitleContent>
+        <ChildContent>
+            <SettingsUser uid="@_uid" usrSettings="@_usrSettings"/>
+        </ChildContent>
+    </MudExpansionPanel>
+    <MudExpansionPanel>
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.ColorLens" />
+                Design
+            </MudText>
+        </TitleContent>
+        <ChildContent>
+            <SettingsDesign UsrSettings="@_usrSettings"/>
+        </ChildContent>
+    </MudExpansionPanel>
+</MudExpansionPanels>

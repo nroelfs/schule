@@ -1,0 +1,89 @@
+﻿@using System.Security.Claims;
+@inherits LayoutComponentBase
+<MudThemeProvider @ref="_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="@dense">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <LoginDisplay/>
+    </MudAppBar>
+    <MudDrawer 
+        @bind-Open="_drawerOpen" 
+        Elevation="2"
+        ClipMode="DrawerClipMode.Always"
+        Breakpoint="Breakpoint.Lg"
+        PreserveOpenState="false" 
+        Variant="@DrawerVariant.Mini"
+        Style="height: 100%">
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-1 pt-1">
+                    @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    [CascadingParameter]
+    Task<AuthenticationState> _authenticationState { get; set; }
+    bool _drawerOpen = false;
+    bool dense = true;
+    bool preserveOpenState = false;
+    bool IsUserAuthenticated = false;
+    DrawerClipMode clipMode = DrawerClipMode.Never;
+    Breakpoint breakpoint = Breakpoint.Lg;
+    bool _isDarkMode = false;
+    private MudThemeProvider _mudThemeProvider;
+    HubConnection _hubConnection;
+    [Inject ] 
+    NavigationManager _navManager { get; set; }
+    [Inject]
+    ISettingsService _settingsService { get; set; }
+    string _uid;
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        var currentauth = await _authenticationState;
+        if(currentauth.User.Identity.IsAuthenticated)
+        {
+            _uid = currentauth.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            _isDarkMode = _settingsService.GetTheme(_uid);
+        }        
+        _hubConnection = new HubConnectionBuilder()
+         .WithUrl(_navManager.ToAbsoluteUri("/serverappschulehub"))
+         .WithAutomaticReconnect()
+         .Build();
+        await _hubConnection.StartAsync();
+        
+        _hubConnection.On("ThemeHasToChange",async (bool hasToChange, string uid) =>
+        {
+            if(uid == _uid)
+            {
+                if (hasToChange)
+                {
+                    _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+                    await _settingsService.UpdateTheme(uid, _isDarkMode);
+                }
+                StateHasChanged();
+            }
+            
+        });        
+        _hubConnection.On("ThemeChanged", async (bool theme, string uid) =>
+        {
+            if(uid == _uid)
+            {
+                _isDarkMode = theme;
+                await _settingsService.UpdateTheme(uid, theme);
+                StateHasChanged();
+            }
+            
+        });
+        await base.OnInitializedAsync();
+    }
+}

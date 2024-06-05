@@ -1,0 +1,31 @@
+﻿<MudContainer>
+    <MudGrid>
+        <MudItem xs="12" md="8">
+            <MudTextField T="string"
+                @bind-Value="_usr.UserName"
+                Label="Benutzername"
+                ReadOnly />
+             <MudTextField T="string"
+                @bind-Value="_usr.Role"
+                Label="Berechtigung"
+                ReadOnly />
+        </MudItem>
+         <MudItem xs="12" md="1"/>
+        <MudItem xs="12" md="3">
+             <MudFileUpload T="IBrowserFile" FilesChanged="@(async e => UploadProfilePicture(e))" Accept=".png, .jpg">
+                 <ButtonTemplate>
+                     <MudImage Src="@_profilepic" Alt="Kein Profilbild Vorhanden" Width="250" Class="rounded-circle"/>
+                            <MudButton HtmlTag="label"
+                                       Variant="Variant.Text"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.Filled.CloudUpload"
+                                       for="@context.Id">
+                                Profilbild hochladen
+                            </MudButton>
+                </ButtonTemplate>
+             </MudFileUpload>
+        </MudItem>
+    </MudGrid>
+     <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OpenDialog">Passwort ändern</MudButton>
+</MudContainer>
+ @* <ChangePasswordDialog uid="@uid" /> *@

@@ -1,0 +1,6 @@
+lebedev-systems.de
+<VirtualHost lebedev-systems.de>
+	ServerName lebedev-systems.de
+	ProxyPass / http://localhost:5027/ 
+	ProxyPassReverse / http://localhost:5027/
+</VirtualServer>

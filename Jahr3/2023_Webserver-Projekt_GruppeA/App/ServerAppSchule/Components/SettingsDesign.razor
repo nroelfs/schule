@@ -1,0 +1,12 @@
+﻿<MudContainer>
+   <MudSwitch 
+        @bind-Checked="@darkmode"
+        T="bool"
+        Label="@(darkmode
+            ? "Dunkles Design" 
+            : "Helles Design")"
+        ThumbIcon="@(darkmode
+            ? Icons.Material.Filled.DarkMode
+            : Icons.Material.Filled.WbSunny)"
+       ValueChanged="@(async (e) => await OnThemeChanged(e))" />
+</MudContainer>

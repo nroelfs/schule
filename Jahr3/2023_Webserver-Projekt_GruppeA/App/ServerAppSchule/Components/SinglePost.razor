@@ -1,0 +1,149 @@
+﻿<MudCard class="@_classes"  Elevation="4">
+    <MudCardHeader>
+        <CardHeaderAvatar>
+            @if (string.IsNullOrEmpty(_profilePicture) || _profilePicture == "data:image/png;base64,")
+            {
+                <MudAvatar Color="Color.Surface" Size="Size.Medium">@_shortusername</MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Color="Color.Surface" Size="Size.Medium">
+                    <MudImage Src="@_profilePicture"></MudImage>
+                </MudAvatar>
+            }
+        </CardHeaderAvatar>
+         <CardHeaderContent>
+            <MudText Typo="Typo.body1"><b>@_username</b> • @Post.CreatedAt.ToString("yyyy-MM-dd • HH:mm")</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            @if(Post.CreatedBy == LoggedInUID)
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Default" OnClick="@(async () => await Delete())" />
+            }
+        </CardHeaderActions>
+    </MudCardHeader>
+    <div @ondblclick="@(async () => await Like())">
+        @if (Post.Pictures == null || Post.Pictures.Count() <= 0 || Pictures == null || Pictures.Count <= 0)
+        {
+            <MudCardContent>
+                <MudText Typo="Typo.body1">@Post.Text</MudText>
+                <MudText Typo="Typo.body2">
+                    @if (Post.Likes == null || Post.Likes.Count() <= 0)
+                    {
+                        <MudIcon Icon="@_heartShapeIcon" Color="Color.Default" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@_heartFilledIcon" Color="Color.Error" />
+                    }
+                    <b>@Post.Likes?.Count() gefällt mir angaben</b>
+                </MudText>
+            </MudCardContent>
+        }
+        else @* if ((Post.Pictures != null  && Post.Pictures.Count() == 1 )|| (Pictures != null && Pictures.Count == 1 )) *@
+        {
+           
+            <MudCardContent>
+                <MudImage Src="@Pictures.First()" Width="500" />
+                <MudText Typo="Typo.body2">
+                    @if (Post.Likes == null || Post.Likes.Count() <= 0)
+                    {
+                        <MudIcon Icon="@_heartShapeIcon" Color="Color.Default" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@_heartFilledIcon" Color="Color.Error" />
+                    }
+                    <b>@Post.Likes?.Count() gefällt mir angaben</b>
+                </MudText>
+                <MudText Typo="Typo.body2">@Post.Text</MudText>
+            </MudCardContent>
+        }@* else
+        {
+            <MudCardContent>
+                <MudCarousel 
+                    Style="width:500px; min-height:300px" 
+                    ShowArrows="true" 
+                    ShowBullets="true" 
+                    EnableSwipeGesture="true"
+                    TData="object">
+                    @foreach(string pic in Pictures)
+                    {
+                        <MudCarouselItem Transition="Transition.Slide" style="height:100%">
+                            <MudImage Src="@pic" Width="500"  />
+                        </MudCarouselItem>
+                    }
+
+                </MudCarousel>
+                <MudText Typo="Typo.body2">
+                    @if (Post.Likes == null || Post.Likes.Count() <= 0)
+                    {
+                        <MudIcon Icon="@_heartShapeIcon" Color="Color.Default" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@_heartFilledIcon" Color="Color.Error" />
+                    }
+                    <b>@Post.Likes?.Count() gefällt mir angaben</b>
+                </MudText>
+                <MudText Typo="Typo.body2">@Post.Text</MudText>
+            </MudCardContent>
+        } *@
+    </div>
+    <MudCardContent>
+    @if (Post.Comments != null && Post.Comments.Count() > 0)
+        {
+            <MudCollapse Expanded="_expanded">
+                <div style="max-height:100px; overflow-y: scroll;">
+                    @foreach (var comment in Post.Comments)
+                    {
+                        <MudText Typo="Typo.body2"><b>@_userService.GetUsernameById(comment.CreatedBy)</b> • @comment.CreatedAt.ToString("yyyy-MM-dd • HH:mm")</MudText>
+                        <MudText Typo="Typo.body2">@comment.Content</MudText>
+                        <br />
+                    }
+                </div>
+            </MudCollapse>
+            @if(Post.Comments.Count > 2)
+            {
+                <MudButton OnClick="OnExpandCollapseClick" Variant="Variant.Text">
+                    @(_expanded ? "Kommentare ausblenden" : "Alle Kommentare anzeigen")
+                </MudButton>
+            }
+        }
+    </MudCardContent>
+    <MudCardActions>
+        @if (!Post.Likes.Where(l => l.Id == LoggedInUID).Any())
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Favorite"
+                           Color="Color.Default"
+                           OnClick="@(async () => await Like())" />
+        }
+        else
+        {
+            <MudIconButton Icon="@Icons.Material.Filled.Favorite"
+                           Color="Color.Error"
+                           OnClick="@(async () => await Like())" />
+        }
+       
+        <MudTextField 
+            Class="rounded-pill"
+            Variant="Variant.Filled" 
+            IconSize="Size.Small"
+            T="string" Clearable 
+            @bind-Value="_comment"
+            Adornment="Adornment.End" 
+            AdornmentIcon="@Icons.Material.Filled.Comment"
+            OnAdornmentClick="@(async () => await AddComment())"
+            Placeholder="Kommentar"/>
+        @* <MudIconButton Icon="@Icons.Material.Filled.Comment" Color="Color.Default" /> *@
+    </MudCardActions>
+</MudCard>
+<style>
+    .mud-input > input.mud-input-root.mud-input-root-filled, div.mud-input-slot.mud-input-root.mud-input-root-filled {
+        padding: 12px !important;
+    }
+    .Card{
+        min-width: 500px !important;
+        margin-bottom: 20px;
+    }
+</style>
